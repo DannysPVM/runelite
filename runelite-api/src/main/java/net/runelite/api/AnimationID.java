@@ -150,6 +150,12 @@ public final class AnimationID
 	public static final int TZTOK_JAD_MAGIC_ATTACK = 2656;
 	public static final int TZTOK_JAD_RANGE_ATTACK = 2652;
 	public static final int HELLHOUND_DEFENCE = 6566;
+	public static final int ZULRAH_CLOUDS_ATTACK = 5069;
+	public static final int VORKATH_NORMAL_ATTACK = 7952;
+	public static final int VORKATH_FIRE_BOMB_ATTACK = 7960;
+	public static final int CERBERUS_WAKE_UP = 4486;
+	public static final int CERBERUS_RETURN_TO_SLEEP = 4487;
+	public static final int KRAKEN_TENTACLE_ATTACK = 3860;
 
 	// Farming
 	public static final int FARMING_HARVEST_FRUIT_TREE = 2280;

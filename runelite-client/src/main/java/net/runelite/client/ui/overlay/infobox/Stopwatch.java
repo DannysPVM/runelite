@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Danny <DannysPVM@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,25 +22,67 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.bosstimer;
+package net.runelite.client.ui.overlay.infobox;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.time.temporal.ChronoUnit;
+import java.time.Duration;
+import java.time.Instant;
+import lombok.Getter;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.infobox.Timer;
 
-class RespawnTimer extends Timer
+public class Stopwatch extends InfoBox
 {
-	private final Boss boss;
+	@Getter
+	private final Instant startTime;
 
-	RespawnTimer(Boss boss, BufferedImage bossImage, Plugin plugin)
+	@Getter
+	private Duration elapsedTime;
+
+	public Stopwatch(BufferedImage image, Plugin plugin)
 	{
-		super(boss.getSpawnTime().toMillis(), ChronoUnit.MILLIS, bossImage, plugin);
-		this.boss = boss;
+		super(image, plugin);
+
+		startTime = Instant.now();
 	}
 
-	public Boss getBoss()
+	@Override
+	public String toString()
 	{
-		return boss;
+		return "Stopwatch { " + "startTime = " + startTime + ", elapsedTime = " + elapsedTime + " }";
 	}
+
+	@Override
+	public String getText()
+	{
+		elapsedTime = Duration.between(startTime, Instant.now());
+
+		int seconds = (int) (elapsedTime.toMillis() / 1000L);
+
+		int minutes = (seconds % 3600) / 60;
+		int secs = seconds % 60;
+
+		return String.format("%d:%02d", minutes, secs);
+	}
+
+	@Override
+	public Color getTextColor()
+	{
+		return Color.WHITE;
+	}
+
+	@Override
+	public boolean render()
+	{
+		Duration time = Duration.between(startTime, Instant.now());
+		return !time.isNegative();
+	}
+
+	@Override
+	public boolean cull()
+	{
+		Duration time = Duration.between(startTime, Instant.now());
+		return time.isZero() || time.isNegative();
+	}
+
 }

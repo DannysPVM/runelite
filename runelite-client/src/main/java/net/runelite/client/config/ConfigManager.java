@@ -43,6 +43,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
 import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -521,6 +522,10 @@ public class ConfigManager
 			int mods = Integer.parseInt(splitStr[1]);
 			return new Keybind(code, mods);
 		}
+		if (type == Duration.class)
+		{
+			return Duration.parse(str);
+		}
 		return str;
 	}
 
@@ -557,6 +562,10 @@ public class ConfigManager
 		{
 			Keybind k = (Keybind) object;
 			return k.getKeyCode() + ":" + k.getModifiers();
+		}
+		if (object instanceof Duration)
+		{
+			return ((Duration) object).toString();
 		}
 		return object.toString();
 	}
